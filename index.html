@@ -1,0 +1,53 @@
+<html  lang="zh-Hant-TW">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link href="video-js.min.css" rel="stylesheet">
+  <script src="ie8/videojs-ie8.min.js"></script>
+</head>
+
+<body>
+  <div id="state">Live stream......</div>
+  <video id="my-video" class="video-js vjs-default-skin" controls preload="auto" width="600" height="300" data-setup="{}">
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a web browser that
+      <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+    </p>
+  </video>
+
+  <script src="video.min.js"></script>
+  <script src="videojs-contrib-hls.min.js"></script>
+  <script>
+  var player = videojs('my-video', {techOrder: ['flash', 'html5']});
+  var tid;
+
+  function load_stat() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        parser(this);
+      }
+    };
+    xhttp.open("GET", "/stat", true);
+    xhttp.send();
+  }
+
+  function parser(xml) {
+    var i;
+    var xmlDoc = xml.responseXML;
+    var streams = xmlDoc.getElementsByTagName("stream");
+    if (typeof streams[0] != 'undefined') {
+      var stream_name = streams[0].childNodes[1].childNodes[0].nodeValue;
+      player.src({
+        src: '/live/' + stream_name + '.m3u8',
+        type: 'application/x-mpegURL'
+      });
+      player.play();
+      document.getElementById("state").innerText = 'Live Stream: http://' + window.location.hostname + '/live/' + stream_name + '.m3u8';
+      clearInterval(tid);
+    }
+  }
+
+  tid = setInterval(load_stat, 1000);
+  </script>
+</body>
+</html>
