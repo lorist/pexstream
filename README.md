@@ -12,5 +12,5 @@ docker container for streaming using HLS
 Dial out from VMR:
 rtmp://<dockerIP>:1935/live/<stream_name
 
-View http://<dockerIP>
+View http://dockerIP
                                          
