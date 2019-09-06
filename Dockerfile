@@ -11,14 +11,15 @@ RUN apk update  \
     && unzip -d /www videojs.zip \
     && rm videojs.zip \
     && cd /www \
-    && wget https://github.com/videojs/videojs-contrib-hls/releases/download/$HLS_VERSION/videojs-contrib-hls.min.js \
-    && chown -R nginx:nginx /www /var/sock /var/rec
+    && wget https://github.com/videojs/videojs-contrib-hls/releases/download/$HLS_VERSION/videojs-contrib-hls.min.js
 
 ADD nginx.conf /etc/nginx/nginx.conf
 ADD stat.xsl /etc/nginx/static/stat.xsl
 ADD index.html /www/index.html
 
 VOLUME /var/rec
+
+RUN chown -R nginx:nginx /www /var/sock /var/rec
 
 EXPOSE 80 1935
 
