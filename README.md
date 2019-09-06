@@ -2,6 +2,7 @@
 docker container for streaming using HLS
 
 `git clone https://github.com/lorist/pexstream.git`
+
 `cd pexstream`
 
 `docker build -t pexstream .`
